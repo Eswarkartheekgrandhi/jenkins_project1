@@ -1,18 +1,14 @@
-from flask import Flask, request
+from flask import Flask
 
 app = Flask(__name__)
 
 @app.route("/")
 def home():
-    numbers = request.args.get("numbers", "")
+    return "Sum App Running"
 
-    if not numbers:
-        return "Usage: ?numbers=10,20,30"
-
-    nums = [int(x) for x in numbers.split(",")]
-    total = sum(nums)
-
-    return f"Sum = {total}"
+@app.route("/sum/<int:a>/<int:b>")
+def add(a, b):
+    return f"Sum = {a + b}"
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
