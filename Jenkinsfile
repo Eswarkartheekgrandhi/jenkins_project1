@@ -5,15 +5,16 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh '''
-                python3 -m venv venv || true
+                cd $WORKSPACE
 
+                python3 -m venv venv
                 . venv/bin/activate
 
-                pip install -r requirements.txt
+                pip install flask
 
                 pkill -f app.py || true
 
-                BUILD_ID=dontKillMe nohup ./venv/bin/python app.py > app.log 2>&1 &
+                nohup python app.py > app.log 2>&1 &
                 '''
             }
         }
