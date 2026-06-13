@@ -2,7 +2,8 @@ pipeline {
     agent any
 
     stages {
-        stage('Install Dependencies') {
+
+        stage('Setup Python') {
             steps {
                 sh '''
                 python3 -m venv venv
@@ -12,11 +13,14 @@ pipeline {
             }
         }
 
-        stage('Verify') {
+        stage('Deploy') {
             steps {
                 sh '''
-                . venv/bin/activate
-                python app.py --help || true
+                pkill -f app.py || true
+
+                export BUILD_ID=dontKillMe
+
+                nohup ./venv/bin/python app.py > app.log 2>&1 &
                 '''
             }
         }
