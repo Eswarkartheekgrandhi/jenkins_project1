@@ -3,12 +3,6 @@ pipeline {
 
     stages {
 
-        stage('Checkout') {
-            steps {
-                git 'https://github.com/Eswarkartheekgrandhi/jenkins_project1.git'
-            }
-        }
-
         stage('Install Dependencies') {
             steps {
                 sh '''
