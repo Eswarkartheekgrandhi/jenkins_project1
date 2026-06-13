@@ -3,6 +3,13 @@ pipeline {
 
     stages {
 
+        stage('Checkout') {
+            steps {
+                git branch: 'main',
+                url: 'https://github.com/Eswarkartheekgrandhi/jenkins_project1.git'
+            }
+        }
+
         stage('Install Dependencies') {
             steps {
                 sh '''
