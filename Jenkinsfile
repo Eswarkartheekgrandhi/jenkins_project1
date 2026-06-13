@@ -2,11 +2,12 @@ pipeline {
     agent any
 
     stages {
-
-        stage('Install Dependencies') {
+        stage('Setup Python') {
             steps {
                 sh '''
-                pip3 install --break-system-packages -r requirements.txt
+                python3 -m venv venv
+                . venv/bin/activate
+                pip install -r requirements.txt
                 '''
             }
         }
@@ -15,7 +16,8 @@ pipeline {
             steps {
                 sh '''
                 pkill -f app.py || true
-                nohup python3 app.py > app.log 2>&1 &
+                . venv/bin/activate
+                nohup python app.py > app.log 2>&1 &
                 '''
             }
         }
