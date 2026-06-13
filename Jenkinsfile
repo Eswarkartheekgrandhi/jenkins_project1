@@ -6,7 +6,10 @@ pipeline {
         stage('Setup Python') {
             steps {
                 sh '''
-                python3 -m venv venv
+                if [ ! -d venv ]; then
+                    python3 -m venv venv
+                fi
+
                 . venv/bin/activate
                 pip install -r requirements.txt
                 '''
@@ -18,9 +21,7 @@ pipeline {
                 sh '''
                 pkill -f app.py || true
 
-                export BUILD_ID=dontKillMe
-
-                nohup ./venv/bin/python app.py > app.log 2>&1 &
+                BUILD_ID=dontKillMe nohup ./venv/bin/python app.py > app.log 2>&1 < /dev/null &
                 '''
             }
         }
