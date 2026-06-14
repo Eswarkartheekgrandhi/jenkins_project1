@@ -8,7 +8,7 @@ pipeline {
 
     stages {
 
-        stage('Checkout') {
+        stage('Checkout Code') {
             steps {
                 git branch: 'main', url: 'https://github.com/Eswarkartheekgrandhi/jenkins_project1.git'
             }
@@ -29,12 +29,21 @@ pipeline {
             }
         }
 
-        stage('Run Container') {
+        stage('Run New Container') {
             steps {
                 sh """
                 docker run -d -p 5000:5000 --name $CONTAINER_NAME $IMAGE_NAME
                 """
             }
+        }
+    }
+
+    post {
+        success {
+            echo "Deployment Successful 🚀"
+        }
+        failure {
+            echo "Deployment Failed ❌"
         }
     }
 }

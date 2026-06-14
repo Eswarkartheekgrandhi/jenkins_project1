@@ -4,12 +4,13 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return "Sum API is running"
+    return "🚀 Sum App is running on EC2 via Jenkins + Docker"
 
 @app.route('/sum', methods=['GET'])
 def sum_numbers():
     a = int(request.args.get('a', 0))
     b = int(request.args.get('b', 0))
+
     return jsonify({
         "a": a,
         "b": b,
