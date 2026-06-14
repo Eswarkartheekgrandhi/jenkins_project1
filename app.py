@@ -1,14 +1,20 @@
-from flask import Flask
+from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-@app.route("/")
+@app.route('/')
 def home():
-    return "Sum App Running"
+    return "Sum API is running"
 
-@app.route("/sum/<int:a>/<int:b>")
-def add(a, b):
-    return f"Sum = {a + b}"
+@app.route('/sum', methods=['GET'])
+def sum_numbers():
+    a = int(request.args.get('a', 0))
+    b = int(request.args.get('b', 0))
+    return jsonify({
+        "a": a,
+        "b": b,
+        "sum": a + b
+    })
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)

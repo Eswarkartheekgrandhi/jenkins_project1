@@ -1,22 +1,39 @@
 pipeline {
     agent any
 
+    environment {
+        IMAGE_NAME = "sum-app"
+        CONTAINER_NAME = "sum-app-container"
+    }
+
     stages {
-        stage('Deploy') {
+
+        stage('Checkout') {
             steps {
-                sh '''
-                cd $WORKSPACE
+                git branch: 'main', url: 'https://github.com/Eswarkartheekgrandhi/jenkins_project1.git'
+            }
+        }
 
-                python3 -m venv venv
-                . venv/bin/activate
+        stage('Build Docker Image') {
+            steps {
+                sh "docker build -t $IMAGE_NAME ."
+            }
+        }
 
-                pip install flask
+        stage('Stop Old Container') {
+            steps {
+                sh """
+                docker stop $CONTAINER_NAME || true
+                docker rm $CONTAINER_NAME || true
+                """
+            }
+        }
 
-                pkill -f app.py || true
-
-                nohup ./venv/bin/python app.py > app.log 2>&1 &
-                disown
-                '''
+        stage('Run Container') {
+            steps {
+                sh """
+                docker run -d -p 5000:5000 --name $CONTAINER_NAME $IMAGE_NAME
+                """
             }
         }
     }
