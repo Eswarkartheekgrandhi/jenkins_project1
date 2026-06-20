@@ -5,30 +5,45 @@
 </head>
 <body>
 
-    <h2>Sum Calculator</h2>
+<h2>Sum Calculator</h2>
 
-    <input type="number" id="a" placeholder="Enter First Number">
-    <input type="number" id="b" placeholder="Enter Second Number">
+<input type="number" id="a" placeholder="First Number">
 
-    <button onclick="calculate()">Calculate</button>
+<input type="number" id="b" placeholder="Second Number">
 
-    <h3 id="result"></h3>
+<button onclick="calculate()">
+    Calculate
+</button>
 
-    <script>
-        async function calculate() {
+<h3 id="result"></h3>
 
-            const a = document.getElementById("a").value;
-            const b = document.getElementById("b").value;
+<br>
 
-            const response =
-                await fetch(`/sum?a=${a}&b=${b}`);
+<a href="/history">
+    View History
+</a>
 
-            const data = await response.json();
+<script>
 
-            document.getElementById("result")
-                .innerHTML = "Sum = " + data.sum;
-        }
-    </script>
+async function calculate() {
+
+    const a =
+        document.getElementById("a").value;
+
+    const b =
+        document.getElementById("b").value;
+
+    const response =
+        await fetch(`/sum?a=${a}&b=${b}`);
+
+    const data =
+        await response.json();
+
+    document.getElementById("result")
+        .innerHTML = "Sum = " + data.sum;
+}
+
+</script>
 
 </body>
 </html>
